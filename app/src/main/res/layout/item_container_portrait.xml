@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <variable
+            name="itemModel"
+            type="com.zalman_hack.mvvmrss.databases.ItemWithChannelAndCategories" />
+
+        <variable
+            name="channelModel"
+            type="com.zalman_hack.mvvmrss.databases.entities.Channel" />
+
+
+        <variable
+            name="listener"
+            type="com.zalman_hack.mvvmrss.adapters.OnClickItemInterface" />
+    </data>
+    
+    <androidx.cardview.widget.CardView
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="5dp"
+        app:cardElevation="4dp"
+        android:onClick="@{()->listener.onClickItem(itemModel)}"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/black_10" />
+
+            <ImageView
+                android:id="@+id/title_image"
+                android:imageURL="@{itemModel.item.image_link}"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/title_background" />
+
+            <TextView
+                android:id="@+id/channel_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{channelModel.name, default=Channel_name}"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/white"
+                android:layout_alignBottom="@id/title_image"/>
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{itemModel.item.title, default=Title}"
+                android:maxLines="3"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_below="@id/title_image"/>
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{itemModel.item.author, default=Author}"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="10dp"
+                android:textAlignment="textEnd"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:layout_below="@id/title_text"
+                />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dateLong="@{itemModel.item.date}"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="10dp"
+                android:textAlignment="textEnd"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:layout_below="@id/title_text"
+                android:layout_toEndOf="@id/author"
+                />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>
+

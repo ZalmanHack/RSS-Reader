@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable
+            name="itemModel"
+            type="com.zalman_hack.mvvmrss.databases.ItemWithChannelAndCategories" />
+
+        <variable
+            name="channelModel"
+            type="com.zalman_hack.mvvmrss.databases.entities.Channel" />
+
+        <variable
+            name="listener"
+            type="com.zalman_hack.mvvmrss.adapters.OnClickItemInterface" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="5dp"
+        app:cardElevation="4dp"
+        android:onClick="@{()->listener.onClickItem(itemModel)}"
+        >
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="110dp">
+
+
+            <View
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:background="@color/black_10"
+                />
+
+
+            <ImageView
+                android:id="@+id/title_image"
+                android:layout_width="160dp"
+                android:imageURL="@{itemModel.item.image_link}"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                />
+
+            <TextView
+                android:id="@+id/channel_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{channelModel.name, default=Channel_name}"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/black"
+                android:layout_toEndOf="@id/title_image"/>
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{itemModel.item.title, default=Title}"
+                android:maxLines="3"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_toEndOf="@id/title_image"
+                android:layout_below="@id/channel_text"/>
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{itemModel.item.author, default=Author}"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="10dp"
+                android:textAlignment="textEnd"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:layout_toEndOf="@id/title_image"
+                android:layout_alignBottom="@id/title_image"
+                />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dateLong="@{itemModel.item.date}"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="10dp"
+                android:textAlignment="textEnd"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:layout_toRightOf="@id/author"
+                android:layout_alignBottom="@id/title_image"
+                />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
