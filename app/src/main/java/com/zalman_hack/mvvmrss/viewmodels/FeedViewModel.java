@@ -14,18 +14,20 @@ import com.zalman_hack.mvvmrss.databases.entities.Channel;
 import com.zalman_hack.mvvmrss.repository.AppRepo;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class FeedViewModel extends AndroidViewModel {
 
-    private AppRepo appRepo;
-    public MutableLiveData<Boolean> refreshStateLive = new MutableLiveData<Boolean>();
-
+    private final AppRepo appRepo;
+    public static final MutableLiveData<Boolean> refreshStateLive = new MutableLiveData<>();
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     public FeedViewModel(@NonNull Application application) {
         super(application);
         appRepo = new AppRepo(application);
         updateChannels();
-        Log.i("12345", "!!!!!!!!!!!!!!!!!!!!");
+        Log.i("FeedViewModel", "init");
     }
 
     public LiveData<List<ChannelWithItems>> getItemsAllLive() {
@@ -45,9 +47,11 @@ public class FeedViewModel extends AndroidViewModel {
     }
 
     public void updateChannels() {
-        refreshStateLive.postValue(true);
-        appRepo.updateChannels();
-        refreshStateLive.postValue(false);
+        executor.execute(() -> {
+            refreshStateLive.postValue(true);
+            appRepo.updateChannels();
+            refreshStateLive.postValue(false);
+        });
     }
 
     public void deleteChannelAll() {

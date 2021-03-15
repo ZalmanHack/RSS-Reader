@@ -2,7 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    
+
     <data>
         <variable
             name="itemModel"
@@ -17,7 +17,7 @@
             name="listener"
             type="com.zalman_hack.mvvmrss.adapters.OnClickItemInterface" />
     </data>
-    
+
     <androidx.cardview.widget.CardView
         android:id="@+id/container"
         android:layout_width="match_parent"

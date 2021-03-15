@@ -16,8 +16,8 @@ import java.util.concurrent.Executors;
 
 public class AppRepo {
 
-    private AppDatabase appDatabase;
-    private Executor executor = Executors.newSingleThreadExecutor();
+    private final AppDatabase appDatabase;
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     public AppRepo(Context context) {
         appDatabase = AppDatabase.getInstance(context);
@@ -25,51 +25,26 @@ public class AppRepo {
 
 
     public void insertItem(Channel channel, ItemWithChannelAndCategories item) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                appDatabase.channelsFeedDao().insertItem(channel, item);
-            }
-        });
+        executor.execute(() -> appDatabase.channelsFeedDao().insertItem(channel, item));
     }
 
 
     public void insertChannel(Channel channel) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                appDatabase.channelsFeedDao().insertChannel(channel);
-            }
-        });
+        executor.execute(() -> appDatabase.channelsFeedDao().insertChannel(channel));
     }
 
     public void deleteFeedsAll() {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                appDatabase.channelsFeedDao().deleteFeedsAll();
-            }
-        });
+        executor.execute(() -> appDatabase.channelsFeedDao().deleteFeedsAll());
     }
 
     public void deleteChannelAll() {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                appDatabase.
-                        channelsFeedDao().
-                        deleteChannelAll();
-            }
-        });
+        executor.execute(() -> appDatabase.
+                channelsFeedDao().
+                deleteChannelAll());
     }
 
     public void deleteChannelOf(String name) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                appDatabase.channelsFeedDao().deleteChannelOf(name);
-            }
-        });
+        executor.execute(() -> appDatabase.channelsFeedDao().deleteChannelOf(name));
     }
 
     public LiveData<List<Channel>> getChannelsAllLive()  {
@@ -97,15 +72,12 @@ public class AppRepo {
     }
 
     public void updateChannelsFuture_() {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                List<Channel> channels = appDatabase.channelsFeedDao().getChannelsAll();
-                for(Channel channel : channels) {
-                    RssParser rssParser = new RssParser(channel.link);
-                    List<ItemWithChannelAndCategories> items = rssParser.getItems();
-                    appDatabase.channelsFeedDao().updateChannelItems(channel, items);
-                }
+        executor.execute(() -> {
+            List<Channel> channels = appDatabase.channelsFeedDao().getChannelsAll();
+            for(Channel channel : channels) {
+                RssParser rssParser = new RssParser(channel.link);
+                List<ItemWithChannelAndCategories> items = rssParser.getItems();
+                appDatabase.channelsFeedDao().updateChannelItems(channel, items);
             }
         });
     }

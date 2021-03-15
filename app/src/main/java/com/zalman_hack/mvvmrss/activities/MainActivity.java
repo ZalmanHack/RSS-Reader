@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -19,16 +18,17 @@ import com.zalman_hack.mvvmrss.databases.entities.Item;
 import com.zalman_hack.mvvmrss.databinding.ActivityMainBinding;
 import com.zalman_hack.mvvmrss.viewmodels.FeedViewModel;
 
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import static java.lang.String.*;
 
 public class MainActivity extends AppCompatActivity implements OnClickItemInterface, SwipeRefreshLayout.OnRefreshListener {
 
     private ActivityMainBinding binding;
     private FeedsPageAdapter adapter;
     private FeedViewModel feedViewModel;
-    private Executor executor = Executors.newSingleThreadExecutor();
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     private static int count = 0;
 
@@ -37,32 +37,27 @@ public class MainActivity extends AppCompatActivity implements OnClickItemInterf
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         adapter = new FeedsPageAdapter(this);
         binding.viewPager.setAdapter(adapter);
-        feedViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(FeedViewModel.class);
-        feedViewModel.getChannelsAllLive().observe(MainActivity.this,
-                new Observer<List<Channel>>() {
-                    @Override
-                    public void onChanged(List<Channel> channels) {
-                            adapter.setChannels(channels);
-                            new TabLayoutMediator(binding.tabLayout, binding.viewPager,
-                                    (tab, position) -> {
-                                        Log.i("UPDATE CHANNELS", String.valueOf(position));
-                                        if(channels.size() > position) {
-                                            tab.setText(channels.get(position).name);
-                                    }
+
+        //feedViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(FeedViewModel.class);
+        feedViewModel = new ViewModelProvider(this).get(FeedViewModel.class);
+        feedViewModel.getChannelsAllLive().observe(this,
+                channels -> {
+                    adapter.setChannels(channels);
+                    new TabLayoutMediator(binding.tabLayout, binding.viewPager,
+                            (tab, position) -> {
+                                Log.i("UPDATE CHANNELS", valueOf(position));
+                                if(channels.size() > position) {
+                                    tab.setText(channels.get(position).name);
+                                }
                             }).attach();
-                    }
                 });
 
         binding.swipeRefreshLayout.setOnRefreshListener(this);
-        feedViewModel.refreshStateLive.observe(MainActivity.this,
-                new Observer<Boolean>() {
-                    @Override
-                    public void onChanged(Boolean aBoolean) {
-                        binding.swipeRefreshLayout.setRefreshing(aBoolean);
-                    }
-                });
+        FeedViewModel.refreshStateLive.observe(MainActivity.this,
+                aBoolean -> binding.swipeRefreshLayout.setRefreshing(aBoolean));
 
         //onButtonDelClick(new View(this));
         binding.add.setOnClickListener(this::onButtonAddClick);
@@ -80,11 +75,11 @@ public class MainActivity extends AppCompatActivity implements OnClickItemInterf
     {
         count+=1;
         Channel channel = new Channel();
-        channel.name = String.valueOf("1");
-        channel.link = "https://vc.ru/rss/all";
+        channel.name = "1";
+        channel.link = "https://www.androidpolice.com/feed/";
         ItemWithChannelAndCategories item = new ItemWithChannelAndCategories();
         item.item = new Item();
-        item.item.title = "title" + String.valueOf(count);
+        item.item.title = "title" + count;
         item.item.description = "description";
         feedViewModel.insertItems(channel, item);
         /*
@@ -113,11 +108,6 @@ public class MainActivity extends AppCompatActivity implements OnClickItemInterf
 
     @Override
     public void onRefresh() {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                feedViewModel.updateChannels();
-            }
-        });
+        feedViewModel.updateChannels();
     }
 }

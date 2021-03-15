@@ -13,18 +13,22 @@ import java.util.List;
 
 public class FeedsPageAdapter extends FragmentStateAdapter {
 
-    private List<Channel> channels = new ArrayList<Channel>();;
     private static final String className = FeedsPageAdapter.class.getName();
-    private List<FeedFragment> fragments = new ArrayList<FeedFragment>();
-    private ArrayList<Long> fragmentIDs = new ArrayList<Long>();
+    private final List<FeedFragment> fragments = new ArrayList<>();
+    private final ArrayList<Long> fragmentIDs = new ArrayList<>();
 
     public FeedsPageAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
+    // TODO Оптимизировать удаление и доавление новых каналов
     public void setChannels(List<Channel> channels) {
         //Log.i(className, MessageFormat.format("setChannels count: {0}", channels.size()));
+        fragments.clear();
+        fragmentIDs.clear();
         for (int i = 0; i < fragments.size();) {
+            FeedFragment fragment = fragments.get(i);
+            fragment.getParentFragmentManager().beginTransaction().remove(fragment).commit();
             fragments.remove(i);
             fragmentIDs.remove(i);
             //notifyItemRemoved(i);
@@ -35,7 +39,6 @@ public class FeedsPageAdapter extends FragmentStateAdapter {
             fragmentIDs.add((long) fragment.hashCode());
             //notifyItemInserted(i);
         }
-        this.channels = channels;
         notifyDataSetChanged();
     }
 
@@ -43,30 +46,22 @@ public class FeedsPageAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         return fragments.get(position);
-        //FeedFragment fragment = FeedFragment.newInstance(channels.get(position));
-        //Log.i(className, MessageFormat.format("createFragment id: {0} position: {1}", fragment.getId(), position));
-        //return fragment;
     }
+
+
 
     @Override
     public int getItemCount() {
-        //Log.i(className, MessageFormat.format("getItemCount count: {0}", channels.size()));
-        //return channels.size();
         return fragments.size();
     }
 
     @Override
     public long getItemId(int position) {
-        //Log.i(className, MessageFormat.format("getItemId: {0} position: {1}", fragmentIDs.get(position), position));
         return fragmentIDs.get(position);
-        //return channels.get(position).channel_id;
-        //return RecyclerView.NO_ID;
     }
 
     @Override
     public boolean containsItem(long itemId) {
-        //Log.i(className, MessageFormat.format("containsItem: {0} Item id: {1}",itemIds.contains(itemId), itemId));
         return fragmentIDs.contains(itemId);
-        //return super.containsItem(itemId);
     }
 }

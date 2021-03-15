@@ -21,10 +21,10 @@ import java.text.MessageFormat;
 import java.util.List;
 
 public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnClickItemInterface {
-    Channel channel;
-    Context context;
-    List<ItemWithChannelAndCategories> itemList;
-    Configuration configuration;
+    private Channel channel;
+    private List<ItemWithChannelAndCategories> itemList;
+    private final Context context;
+    private final Configuration configuration;
 
     public FeedAdapter(Context context, Configuration configuration) {
         this.configuration = configuration;
@@ -34,31 +34,26 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void setChannelsWithItems(Channel channel, List<ItemWithChannelAndCategories> itemList) {
         Log.i("FeedAdapter", MessageFormat.format("setChannelsWithItems. itemList count: {0}", itemList.size()));
         boolean isDataChanged = false;
-        if(this.channel == null || this.channel.hashCode() != this.channel.hashCode()) {
+        if(this.channel == null || !this.channel.equals(channel)) {
             this.channel = channel;
             isDataChanged = true;
         }
-        if(this.itemList == null || this.itemList.hashCode() != this.itemList.hashCode()) {
+        if(this.itemList == null || !this.itemList.equals(itemList)) {
             this.itemList = itemList;
             isDataChanged = true;
         }
-        int i = 0;
-        for (ItemWithChannelAndCategories item : itemList) {
-            notifyItemInserted(i++);
+        if(isDataChanged) {
+            this.notifyDataSetChanged();
         }
-
-        //if(isDataChanged) {
-            notifyDataSetChanged();
-        //}
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Log.i("FeedAdapter", "onBindViewHolder");
         if (itemList != null) {
             if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 ItemWithChannelAndCategories item = itemList.get(position);
-                ((ViewHolderPortrait) holder).binding.container.setAnimation(AnimationUtils.loadAnimation(context, R.anim.item_transition));
+                ((ViewHolderPortrait) holder).binding.container.setAnimation(AnimationUtils.loadAnimation(context,R.anim.item_transition));
                 ((ViewHolderPortrait) holder).binding.setItemModel(item);
                 ((ViewHolderPortrait) holder).binding.setChannelModel(channel);
                 ((ViewHolderPortrait) holder).binding.setListener(this);
@@ -116,6 +111,4 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             this.binding = binding;
         }
     }
-
-
 }

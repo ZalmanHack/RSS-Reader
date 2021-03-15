@@ -13,7 +13,7 @@ import com.zalman_hack.mvvmrss.databases.entities.Item;
 import com.zalman_hack.mvvmrss.databases.entities.ItemWithCategory;
 
 @TypeConverters({Converters.class})
-@Database(entities = {Item.class, Category.class, ItemWithCategory.class, Channel.class}, exportSchema = false, version = 15)
+@Database(entities = {Item.class, Category.class, ItemWithCategory.class, Channel.class}, exportSchema = false, version = 16)
 public abstract class AppDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME = "feed_database.db";
