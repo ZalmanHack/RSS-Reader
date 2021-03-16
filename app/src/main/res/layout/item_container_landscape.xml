@@ -23,27 +23,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
-        android:layout_margin="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="0dp"
         app:cardElevation="4dp"
         android:onClick="@{()->listener.onClickItem(itemModel)}"
-        >
+        android:focusable="true">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="110dp">
 
-
-            <View
-                android:layout_width="160dp"
-                android:layout_height="match_parent"
-                android:background="@color/black_10"
-                />
-
-
             <ImageView
                 android:id="@+id/title_image"
                 android:layout_width="160dp"
+                android:background="@color/black_10A"
                 android:imageURL="@{itemModel.item.image_link}"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -96,7 +91,7 @@
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:dateLong="@{itemModel.item.date}"
+                android:dateShort="@{itemModel.item.date}"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"

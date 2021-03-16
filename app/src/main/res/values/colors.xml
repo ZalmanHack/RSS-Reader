@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="black_10">#20000000</color>
-    <color name="black_25">#40000000</color>
-    <color name="black_50">#80000000</color>
+<resources
+    xmlns:tools="http://schemas.android.com/tools">
+    <color name="black_10A">#20000000</color>
+    <color name="black_25A">#40000000</color>
+    <color name="black_50A">#80000000</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
     <color name="textPrimary">#000000</color>
+
+
+
+    <color name="white_50">#88FFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black_200">#FFCCCCCC</color>
+    <color name="black">#FF000000</color>
+    <color name="saffron">#FFfeaa33</color>
+    <color name="saffron_25">#40feaa33</color>
+    <color name="red">#FFFF0000</color>
+
+    <color name = "mtrl_textinput_default_box_stroke_color" tools:override = "true">@color/saffron</color>
 </resources>

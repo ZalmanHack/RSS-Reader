@@ -25,7 +25,7 @@ public abstract class ChannelsFeedDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract long insertCategory(Category record);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract long insertChannel(Channel record);
 
 
@@ -59,8 +59,8 @@ public abstract class ChannelsFeedDao {
 
     // FIXME: Во время каскадного удаления items могцт остаться более не используемые категории,
     //  что приводит к утечке памяти
-    @Query("DELETE FROM channel WHERE name == :name ")
-    public abstract void deleteChannelOf(String name);
+    @Query("DELETE FROM channel WHERE name == :name AND link == :link")
+    public abstract void deleteChannelOf(String name, String link);
 
 
     @Transaction

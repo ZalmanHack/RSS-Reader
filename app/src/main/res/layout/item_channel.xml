@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <variable
+            name="channelModel"
+            type="com.zalman_hack.mvvmrss.databases.entities.Channel" />
+
+        <variable
+            name="listener"
+            type="com.zalman_hack.mvvmrss.adapters.OnClickChannelInterface" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <View
+            android:id="@+id/lineView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_200"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="@{channelModel.name, default=title}"
+            app:layout_constraintEnd_toStartOf="@id/delete"
+            app:layout_constraintStart_toStartOf="@id/lineView"
+            app:layout_constraintTop_toBottomOf="@id/lineView" />
+
+        <TextView
+            android:id="@+id/link"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="16sp"
+            android:text="@{channelModel.link, default=link}"
+            android:textColor="@color/saffron"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toStartOf="@id/delete"
+            app:layout_constraintStart_toStartOf="@id/lineView"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:onClick="@{()->listener.onDeleteChannel(channelModel)}"
+            android:src="@drawable/ic_baseline_clear"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintEnd_toEndOf="@id/lineView"
+            app:layout_constraintTop_toTopOf="@id/title"
+            app:layout_constraintBottom_toBottomOf="@id/link"
+            app:tint="@color/red"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

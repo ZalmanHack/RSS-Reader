@@ -35,13 +35,13 @@ public class BindingAdapters {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @BindingAdapter("android:dateShort")
+    @BindingAdapter("android:dateLong")
     public static void setDateShort(TextView textView, Date date) {
         textView.setText(getDateWithFormat(date, "dd.MM.yyyy HH:mm:ss"));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @BindingAdapter("android:dateLong")
+    @BindingAdapter("android:dateShort")
     public static void setDateLong(TextView textView, Date date) {
         textView.setText(getDateWithFormat(date, "dd.MM.yyyy"));
     }

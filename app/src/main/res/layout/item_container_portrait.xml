@@ -12,7 +12,6 @@
             name="channelModel"
             type="com.zalman_hack.mvvmrss.databases.entities.Channel" />
 
-
         <variable
             name="listener"
             type="com.zalman_hack.mvvmrss.adapters.OnClickItemInterface" />
@@ -23,19 +22,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
-        android:layout_margin="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="0dp"
         app:cardElevation="4dp"
         android:onClick="@{()->listener.onClickItem(itemModel)}"
-        >
+        android:focusable="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:background="@color/black_10" />
 
             <ImageView
                 android:id="@+id/title_image"
@@ -48,7 +44,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:background="@drawable/title_background" />
+                android:background="@drawable/title_background_alternative" />
 
             <TextView
                 android:id="@+id/channel_text"
@@ -95,7 +91,7 @@
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:dateLong="@{itemModel.item.date}"
+                android:dateShort="@{itemModel.item.date}"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"

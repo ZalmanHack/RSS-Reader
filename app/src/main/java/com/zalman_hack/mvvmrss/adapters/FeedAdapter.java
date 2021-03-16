@@ -20,15 +20,17 @@ import com.zalman_hack.mvvmrss.databinding.ItemContainerPortraitBinding;
 import java.text.MessageFormat;
 import java.util.List;
 
-public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnClickItemInterface {
+public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Channel channel;
     private List<ItemWithChannelAndCategories> itemList;
     private final Context context;
     private final Configuration configuration;
+    private final OnClickItemInterface clickItemInterface;
 
-    public FeedAdapter(Context context, Configuration configuration) {
+    public FeedAdapter(Context context, Configuration configuration, OnClickItemInterface clickItemInterface) {
         this.configuration = configuration;
         this.context = context;
+        this.clickItemInterface = clickItemInterface;
     }
 
     public void setChannelsWithItems(Channel channel, List<ItemWithChannelAndCategories> itemList) {
@@ -56,12 +58,12 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 ((ViewHolderPortrait) holder).binding.container.setAnimation(AnimationUtils.loadAnimation(context,R.anim.item_transition));
                 ((ViewHolderPortrait) holder).binding.setItemModel(item);
                 ((ViewHolderPortrait) holder).binding.setChannelModel(channel);
-                ((ViewHolderPortrait) holder).binding.setListener(this);
+                ((ViewHolderPortrait) holder).binding.setListener(clickItemInterface);
             } else {
                 ItemWithChannelAndCategories item = itemList.get(position);
                 ((ViewHolderLandscape) holder).binding.setItemModel(item);
                 ((ViewHolderLandscape) holder).binding.setChannelModel(channel);
-                ((ViewHolderLandscape) holder).binding.setListener(this);
+                ((ViewHolderLandscape) holder).binding.setListener(clickItemInterface);
             }
         }
     }
@@ -89,11 +91,6 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             return itemList.size();
         }
         return 0;
-    }
-
-    @Override
-    public void onClickItem(ItemWithChannelAndCategories item) {
-
     }
 
     public static class ViewHolderPortrait extends RecyclerView.ViewHolder {

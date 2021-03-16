@@ -29,8 +29,20 @@ public class AppRepo {
     }
 
 
-    public void insertChannel(Channel channel) {
-        executor.execute(() -> appDatabase.channelsFeedDao().insertChannel(channel));
+    public boolean insertChannel(Channel channel) {
+        try {
+            RssParser rssParser = new RssParser(channel.link);
+            if(!rssParser.isDataLoaded()) {
+                return false;
+            }
+            channel = rssParser.getChannel();
+            appDatabase.channelsFeedDao().insertChannel(channel);
+            List<ItemWithChannelAndCategories> items = rssParser.getItems();
+            appDatabase.channelsFeedDao().updateChannelItems(channel, items);
+            return true;
+        } catch (Exception ignore) {
+            return false;
+        }
     }
 
     public void deleteFeedsAll() {
@@ -43,8 +55,8 @@ public class AppRepo {
                 deleteChannelAll());
     }
 
-    public void deleteChannelOf(String name) {
-        executor.execute(() -> appDatabase.channelsFeedDao().deleteChannelOf(name));
+    public void deleteChannelOf(Channel channel) {
+        executor.execute(() -> appDatabase.channelsFeedDao().deleteChannelOf(channel.name, channel.link));
     }
 
     public LiveData<List<Channel>> getChannelsAllLive()  {
@@ -60,15 +72,24 @@ public class AppRepo {
         return appDatabase.channelsFeedDao().getItemsOfChannelLive(channelId);
     }
 
-    public void updateChannels() {
+    public boolean updateChannels() {
         try {
+            boolean result = true;
             List<Channel> channels = appDatabase.channelsFeedDao().getChannelsAll();
             for(Channel channel : channels) {
                 RssParser rssParser = new RssParser(channel.link);
-                List<ItemWithChannelAndCategories> items = rssParser.getItems();
-                appDatabase.channelsFeedDao().updateChannelItems(channel, items);
+                if(!rssParser.isDataLoaded()) {
+                    result = false;
+                }
+                else {
+                    List<ItemWithChannelAndCategories> items = rssParser.getItems();
+                    appDatabase.channelsFeedDao().updateChannelItems(channel, items);
+                }
             }
-        } catch (Exception ignore) { }
+            return result;
+        } catch (Exception ignore) {
+            return false;
+        }
     }
 
     public void updateChannelsFuture_() {

@@ -1,47 +1,45 @@
 package com.zalman_hack.mvvmrss.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.zalman_hack.mvvmrss.R;
 import com.zalman_hack.mvvmrss.adapters.FeedsPageAdapter;
-import com.zalman_hack.mvvmrss.adapters.OnClickItemInterface;
-import com.zalman_hack.mvvmrss.databases.ItemWithChannelAndCategories;
-import com.zalman_hack.mvvmrss.databases.entities.Channel;
-import com.zalman_hack.mvvmrss.databases.entities.Item;
 import com.zalman_hack.mvvmrss.databinding.ActivityMainBinding;
 import com.zalman_hack.mvvmrss.viewmodels.FeedViewModel;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import static java.lang.String.valueOf;
 
-import static java.lang.String.*;
-
-public class MainActivity extends AppCompatActivity implements OnClickItemInterface, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private ActivityMainBinding binding;
     private FeedsPageAdapter adapter;
     private FeedViewModel feedViewModel;
-    private final Executor executor = Executors.newSingleThreadExecutor();
-
-    private static int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setNavigationBarColor(getColor(R.color.white));
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         adapter = new FeedsPageAdapter(this);
         binding.viewPager.setAdapter(adapter);
 
-        //feedViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(FeedViewModel.class);
         feedViewModel = new ViewModelProvider(this).get(FeedViewModel.class);
         feedViewModel.getChannelsAllLive().observe(this,
                 channels -> {
@@ -56,58 +54,41 @@ public class MainActivity extends AppCompatActivity implements OnClickItemInterf
                 });
 
         binding.swipeRefreshLayout.setOnRefreshListener(this);
-        FeedViewModel.refreshStateLive.observe(MainActivity.this,
-                aBoolean -> binding.swipeRefreshLayout.setRefreshing(aBoolean));
+        binding.swipeRefreshLayout.setColorSchemeColors(getColor(R.color.saffron));
+        feedViewModel.refreshStateLive.observe(MainActivity.this,
+                state -> {
+                    if (state.equals(FeedViewModel.UpdatedState.UPDATING)) {
+                        binding.swipeRefreshLayout.setRefreshing(true);
+                    }
+                    else if(state.equals(FeedViewModel.UpdatedState.UN_SUCCESSFUL) || state.equals(FeedViewModel.UpdatedState.SUCCESSFUL)) {
+                        binding.swipeRefreshLayout.setRefreshing(false);
+                        if(state.equals(FeedViewModel.UpdatedState.UN_SUCCESSFUL))
+                            Toast.makeText(this, "Сбой при обновлении", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-        //onButtonDelClick(new View(this));
-        binding.add.setOnClickListener(this::onButtonAddClick);
-        binding.del.setOnClickListener(this::onButtonDelClick);
+        setSupportActionBar(binding.toolbar);
     }
 
     @Override
-    public void onClickItem(ItemWithChannelAndCategories projectModel) {
-        Intent intent = new Intent(MainActivity.this, ShowItemActivity.class);
-        intent.putExtra("model", projectModel);
-        startActivity(intent);
-    }
-
-    public void onButtonAddClick(View v)
-    {
-        count+=1;
-        Channel channel = new Channel();
-        channel.name = "1";
-        channel.link = "https://www.androidpolice.com/feed/";
-        ItemWithChannelAndCategories item = new ItemWithChannelAndCategories();
-        item.item = new Item();
-        item.item.title = "title" + count;
-        item.item.description = "description";
-        feedViewModel.insertItems(channel, item);
-        /*
-        List<String> channels = new ArrayList<String>(Arrays.asList(
-                "https://vc.ru/rss/all",
-                "https://www.androidpolice.com/feed/",
-                "https://blog.humblebundle.com/rss",
-                "https://www.eurosport.ru/rss.xml"));
-
-        for (int i = 1; i <= channels.size(); i++) {
-            Channel channel = new Channel();
-            channel.name = String.valueOf(i);// + String.valueOf(new Date().getTime());
-            channel.link = channels.get(i-1);
-            feedViewModel.insertChannel(channel);
-        }
-         */
-    }
-
-    public void onButtonDelClick(View v)
-    {
-        feedViewModel.deleteChannelAll();
-        //feedViewModel.deleteChannelOf();
-        //appRepo.deleteChannelOf("РИА новости");
-        Log.i("MYTEG", "Del Click");
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     @Override
     public void onRefresh() {
         feedViewModel.updateChannels();
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -39,6 +39,7 @@ public class Item implements Parcelable {
 
     protected Item(Parcel in) {
         item_id = in.readLong();
+        date = new Date(in.readLong());
         author = in.readString();
         title = in.readString();
         description = in.readString();
@@ -67,6 +68,7 @@ public class Item implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(item_id);
+        dest.writeLong(date.getTime());
         dest.writeString(author);
         dest.writeString(title);
         dest.writeString(description);
