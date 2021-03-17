@@ -50,7 +50,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:contentDescription="@string/news_intro"
+                    android:contentDescription="@{channelModel.name}"
                     android:imageURL="@{itemModel.item.image_link}"
                     android:background="@color/white"
                     android:scaleType="centerCrop"
@@ -118,7 +118,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:dateLong="@{itemModel.item.date}"
-                    android:text="long_date"
                     android:textAlignment="textEnd"
                     android:textColor="@color/textPrimary"
                     android:textSize="14sp"

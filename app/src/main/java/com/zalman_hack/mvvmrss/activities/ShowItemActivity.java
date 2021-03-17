@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +32,6 @@ public class ShowItemActivity extends AppCompatActivity {
 
     private ActivityShowItemBinding binding;
     private ItemWithChannelAndCategories itemModel = new ItemWithChannelAndCategories();
-    private Channel channelModel = new Channel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +55,14 @@ public class ShowItemActivity extends AppCompatActivity {
         }
 
         if (getIntent().hasExtra("channelModel")) {
-            channelModel = getIntent().getParcelableExtra("channelModel");
+            Channel channelModel = getIntent().getParcelableExtra("channelModel");
             binding.setChannelModel(channelModel);
         }
 
         setSupportActionBar(binding.toolbar);
-        // для добавления кнопки назад в активити
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-
-
         binding.appBar.addOnOffsetChangedListener(((appBarLayout, verticalOffset) -> {
-            Log.i("appBar", String.valueOf(verticalOffset) + " : " + String.valueOf(appBarLayout.getTotalScrollRange()));
             int colorRes = (Math.abs(verticalOffset) > appBarLayout.getTotalScrollRange() * 0.75) ? R.color.saffron : R.color.white;
             MyDrawableCompat.setColorFilter(Objects.requireNonNull(binding.toolbar.getNavigationIcon()), getColor(colorRes));
             for(int i = 0; i < binding.toolbar.getMenu().size(); i++) {

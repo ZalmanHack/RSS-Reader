@@ -58,32 +58,3 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
-
-
-
-
-    <!--
-
-         <Button
-        android:id="@+id/button_del"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete"
-        android:onClick="onButtonDelClick"/>
-
-    <Button
-        android:id="@+id/button_add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add"
-        android:onClick="onButtonAddClick"
-        android:layout_below="@id/button_del"/>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment"
-        android:name="com.zalman_hack.mvvmrss.fragments.FeedFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/button_add"/>
-
-     -->

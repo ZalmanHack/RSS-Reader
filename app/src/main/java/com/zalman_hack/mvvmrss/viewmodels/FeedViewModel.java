@@ -61,16 +61,8 @@ public class FeedViewModel extends AndroidViewModel {
         });
     }
 
-    public void deleteChannelAll() {
-        appRepo.deleteChannelAll();
-    }
-
     public void deleteChannelOf(Channel channel) {
         appRepo.deleteChannelOf(channel);
-    }
-
-    public void insertItems(Channel channel, ItemWithChannelAndCategories item) {
-        appRepo.insertItem(channel, item);
     }
 
     public void insertChannel(Channel channel) {

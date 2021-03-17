@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     else if(state.equals(FeedViewModel.UpdatedState.UN_SUCCESSFUL) || state.equals(FeedViewModel.UpdatedState.SUCCESSFUL)) {
                         binding.swipeRefreshLayout.setRefreshing(false);
                         if(state.equals(FeedViewModel.UpdatedState.UN_SUCCESSFUL))
-                            Toast.makeText(this, "Сбой при обновлении", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
                     }
                 });
 

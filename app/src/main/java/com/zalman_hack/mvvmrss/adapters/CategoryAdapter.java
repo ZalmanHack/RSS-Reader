@@ -14,8 +14,8 @@ import com.zalman_hack.mvvmrss.databinding.ItemCategoryBinding;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final List<Category> categories;
 
+    private final List<Category> categories;
     public CategoryAdapter(List<Category> categories) {
         this.categories = categories;
     }
@@ -41,7 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public static class ViewHolderCategory extends RecyclerView.ViewHolder {
-        private ItemCategoryBinding binding;
+        private final ItemCategoryBinding binding;
         public ViewHolderCategory(@NonNull ItemCategoryBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

@@ -23,36 +23,20 @@ public class AppRepo {
         appDatabase = AppDatabase.getInstance(context);
     }
 
-
-    public void insertItem(Channel channel, ItemWithChannelAndCategories item) {
-        executor.execute(() -> appDatabase.channelsFeedDao().insertItem(channel, item));
-    }
-
-
     public boolean insertChannel(Channel channel) {
         try {
             RssParser rssParser = new RssParser(channel.link);
-            if(!rssParser.isDataLoaded()) {
-                return false;
+            if(rssParser.isDataLoaded()) {
+                channel = rssParser.getChannel();
+                appDatabase.channelsFeedDao().insertChannel(channel);
+                List<ItemWithChannelAndCategories> items = rssParser.getItems();
+                appDatabase.channelsFeedDao().updateChannelItems(channel, items);
+                return true;
             }
-            channel = rssParser.getChannel();
-            appDatabase.channelsFeedDao().insertChannel(channel);
-            List<ItemWithChannelAndCategories> items = rssParser.getItems();
-            appDatabase.channelsFeedDao().updateChannelItems(channel, items);
-            return true;
+            return false;
         } catch (Exception ignore) {
             return false;
         }
-    }
-
-    public void deleteFeedsAll() {
-        executor.execute(() -> appDatabase.channelsFeedDao().deleteFeedsAll());
-    }
-
-    public void deleteChannelAll() {
-        executor.execute(() -> appDatabase.
-                channelsFeedDao().
-                deleteChannelAll());
     }
 
     public void deleteChannelOf(Channel channel) {
@@ -67,7 +51,6 @@ public class AppRepo {
         return appDatabase.channelsFeedDao().getItemsAllLive();
     }
 
-
     public LiveData<List<ItemWithChannelAndCategories>> getItemsOfChannelLive(long channelId) {
         return appDatabase.channelsFeedDao().getItemsOfChannelLive(channelId);
     }
@@ -78,28 +61,17 @@ public class AppRepo {
             List<Channel> channels = appDatabase.channelsFeedDao().getChannelsAll();
             for(Channel channel : channels) {
                 RssParser rssParser = new RssParser(channel.link);
-                if(!rssParser.isDataLoaded()) {
-                    result = false;
-                }
-                else {
+                if(rssParser.isDataLoaded()) {
                     List<ItemWithChannelAndCategories> items = rssParser.getItems();
                     appDatabase.channelsFeedDao().updateChannelItems(channel, items);
+                }
+                else {
+                    result = false;
                 }
             }
             return result;
         } catch (Exception ignore) {
             return false;
         }
-    }
-
-    public void updateChannelsFuture_() {
-        executor.execute(() -> {
-            List<Channel> channels = appDatabase.channelsFeedDao().getChannelsAll();
-            for(Channel channel : channels) {
-                RssParser rssParser = new RssParser(channel.link);
-                List<ItemWithChannelAndCategories> items = rssParser.getItems();
-                appDatabase.channelsFeedDao().updateChannelItems(channel, items);
-            }
-        });
     }
 }

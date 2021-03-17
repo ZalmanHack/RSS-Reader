@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:scaleType="centerCrop"
-                />
+                android:contentDescription="@{channelModel.name}" />
 
             <View
                 android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:layout_below="@id/title_image"/>
@@ -80,12 +80,11 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:textAlignment="textEnd"
                 android:textStyle="normal"
                 android:textColor="@color/black"
-                android:layout_below="@id/title_text"
-                />
+                android:layout_below="@id/title_text" />
 
             <TextView
                 android:id="@+id/date"
@@ -95,13 +94,12 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:textAlignment="textEnd"
                 android:textStyle="normal"
                 android:textColor="@color/black"
                 android:layout_below="@id/title_text"
-                android:layout_toEndOf="@id/author"
-                />
+                android:layout_toEndOf="@id/author" />
 
         </RelativeLayout>
 

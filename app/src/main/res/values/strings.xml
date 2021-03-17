@@ -1,16 +1,15 @@
 <resources>
-    <string name="app_name">MVVM RSS</string>
-    <string name="About">Google says over 100 games will join Stadia in 2021, despite first-party studio closure</string>
-    <string name="Text">Google revealed earlier this month that it would close its own first-party game studio for Stadia, less than a year after forming it (seemingly forgetting that most games take multiple years to complete). The company said it would focus instead on turning Stadia into a turn-key cloud solution for publishers, as well as releasing more third-party games, and now Google has shared more details about the latter plan. This weeks Stadia community blog post went live today, revealing that Google is planning for "more than 100 games" to arrive on the platform throughout 2021.</string>
-    <string name="news_intro">news intro</string>
-    <string name="menu_settings">settings</string>
-    <string name="menu_open_in_browser">open in browser</string>
-    <string name="menu_share">share</string>
-    <string name="news_date">news date</string>
-    <string name="title_settings">Settings</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="delete_message_text">do you want to delete?</string>
+    <string name="app_name">RSS Reader</string>
+    <string name="settings">Settings</string>
+    <string name="menu_open_in_browser">Open in browser</string>
+    <string name="menu_share">Share</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="delete_message_text">Do you want to delete?</string>
+    <string name="update_failed">Update failed</string>
+    <string name="update_successful">News feed added successfully</string>
+    <string name="feed_resource_not_found">News feed not found</string>
+    <string name="add_channel">Add channel</string>
+    <string name="rss_feed_url">RSS Feed URL</string>
+    <string name="channel_input_helper">Enter URL with RSS news feed </string>
 </resources>

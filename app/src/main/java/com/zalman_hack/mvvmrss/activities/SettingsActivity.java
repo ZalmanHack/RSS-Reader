@@ -43,10 +43,7 @@ public class SettingsActivity extends AppCompatActivity implements OnClickChanne
         binding.channelRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         feedViewModel = new ViewModelProvider(this).get(FeedViewModel.class);
-        feedViewModel.getChannelsAllLive().observe(this,
-                channels -> {
-                    adapter.setChannels(channels);
-                });
+        feedViewModel.getChannelsAllLive().observe(this, channels -> adapter.setChannels(channels));
 
         feedViewModel.insertChannelStateLive.observe(this,
                 state -> {
@@ -60,10 +57,10 @@ public class SettingsActivity extends AppCompatActivity implements OnClickChanne
 
                         if(state.equals(FeedViewModel.UpdatedState.SUCCESSFUL)) {
                             binding.urlText.setText("");
-                            Toast.makeText(this, "Новостная лента успешно добавлена!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, getString(R.string.update_successful), Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(this, "Новостная лента не найдена", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, getString(R.string.feed_resource_not_found), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -77,9 +74,7 @@ public class SettingsActivity extends AppCompatActivity implements OnClickChanne
             public void afterTextChanged(Editable s) {  }
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
         });
-
 
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);

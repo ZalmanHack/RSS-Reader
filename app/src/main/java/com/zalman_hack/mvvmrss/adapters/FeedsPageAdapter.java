@@ -13,7 +13,6 @@ import java.util.List;
 
 public class FeedsPageAdapter extends FragmentStateAdapter {
 
-    private static final String className = FeedsPageAdapter.class.getName();
     private final List<FeedFragment> fragments = new ArrayList<>();
     private final ArrayList<Long> fragmentIDs = new ArrayList<>();
 
@@ -21,9 +20,7 @@ public class FeedsPageAdapter extends FragmentStateAdapter {
         super(fragmentActivity);
     }
 
-    // TODO Оптимизировать удаление и доавление новых каналов
     public void setChannels(List<Channel> channels) {
-        //Log.i(className, MessageFormat.format("setChannels count: {0}", channels.size()));
         fragments.clear();
         fragmentIDs.clear();
         for (int i = 0; i < fragments.size();) {
@@ -31,13 +28,11 @@ public class FeedsPageAdapter extends FragmentStateAdapter {
             fragment.getParentFragmentManager().beginTransaction().remove(fragment).commit();
             fragments.remove(i);
             fragmentIDs.remove(i);
-            //notifyItemRemoved(i);
         }
         for (int i = 0; i < channels.size(); i++) {
             FeedFragment fragment = FeedFragment.newInstance(channels.get(i));
             fragments.add(fragment);
             fragmentIDs.add((long) fragment.hashCode());
-            //notifyItemInserted(i);
         }
         notifyDataSetChanged();
     }
@@ -47,8 +42,6 @@ public class FeedsPageAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         return fragments.get(position);
     }
-
-
 
     @Override
     public int getItemCount() {

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RSS Reader</string>
+    <string name="settings">Настройки</string>
+    <string name="menu_open_in_browser">Открыть в браузере</string>
+    <string name="menu_share">Поделиться</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_message_text">Вы уверены, что хотите удалить?</string>
+    <string name="update_failed">Не удалось обновить ленту</string>
+    <string name="update_successful">Новостная лента успешно добавлена</string>
+    <string name="feed_resource_not_found">Новостная лента не найдена</string>
+    <string name="add_channel">Добавить канал</string>
+    <string name="rss_feed_url">URL ссылка</string>
+    <string name="channel_input_helper">Введите URL ссылку на RSS новостную ленту</string>
+</resources>

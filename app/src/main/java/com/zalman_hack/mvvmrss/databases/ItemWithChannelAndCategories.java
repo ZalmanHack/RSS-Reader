@@ -18,9 +18,6 @@ public class ItemWithChannelAndCategories implements Parcelable {
     @Embedded
     public Item item;
 
-    //@Embedded
-    //public Channel channel;
-
     @Relation(parentColumn = "item_id",
             entity = Category.class,
             entityColumn = "category_id",

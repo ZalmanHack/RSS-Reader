@@ -3,7 +3,6 @@ package com.zalman_hack.mvvmrss.fragments;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -12,13 +11,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.zalman_hack.mvvmrss.R;
 import com.zalman_hack.mvvmrss.databases.entities.Channel;
-import com.zalman_hack.mvvmrss.databinding.FragmentDeleteDialogBinding;
 import com.zalman_hack.mvvmrss.viewmodels.FeedViewModel;
+
+import java.util.Objects;
 
 public class DeleteDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
     private static final String ARG_PARAM1 = "channel";
-    private FragmentDeleteDialogBinding binding;
     private FeedViewModel feedViewModel;
     private Channel channel;
 
@@ -39,7 +38,7 @@ public class DeleteDialogFragment extends DialogFragment implements DialogInterf
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (getArguments() != null) {
             channel = getArguments().getParcelable(ARG_PARAM1);
-            feedViewModel = new ViewModelProvider(this).get(FeedViewModel.class);
+            feedViewModel = new ViewModelProvider(requireActivity()).get(FeedViewModel.class);
         }
         AlertDialog.Builder adb = new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.delete_message_text)
@@ -51,11 +50,8 @@ public class DeleteDialogFragment extends DialogFragment implements DialogInterf
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        switch (which) {
-            case Dialog.BUTTON_POSITIVE:
-                feedViewModel.deleteChannelOf(channel);
-                Toast.makeText(getContext(), "Channel \"" + channel.name + "\" was deleted", Toast.LENGTH_LONG).show();
-                break;
+        if (which == Dialog.BUTTON_POSITIVE) {
+            feedViewModel.deleteChannelOf(channel);
         }
     }
 }

@@ -18,24 +18,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import static org.jsoup.parser.Parser.unescapeEntities;
 
 public class RssParser {
 
-    private static final String TAG = RssParser.class.getSimpleName();
-    private final Executor executor = Executors.newSingleThreadExecutor();
     private final Channel channel = new Channel();
-    private final List<Category> categories = new ArrayList<Category>();;
     private final List<ItemWithChannelAndCategories> items = new ArrayList<>();
     private boolean isDataLoaded = false;
 
@@ -47,19 +39,12 @@ public class RssParser {
     public void init() {
         try {
             setDataLoaded(false);
-            XmlReader xmlReader;
-            if(channel.link.contains("https://")) {
-                xmlReader = new XmlReader((HttpsURLConnection) new URL(channel.link).openConnection());
-            }
-            else {
-                xmlReader = new XmlReader((HttpURLConnection) new URL(channel.link).openConnection());
-            }
+            XmlReader xmlReader = new XmlReader(new URL(channel.link).openConnection());
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed feed = input.build(xmlReader);
             channel.name = feed.getTitle();
             List<SyndEntry> entries = feed.getEntries();
 
-            int i = 1;
             for (SyndEntry entry : entries) {
                 ItemWithChannelAndCategories itemWithCategories = new ItemWithChannelAndCategories();
                 itemWithCategories.item = new Item();
@@ -110,11 +95,13 @@ public class RssParser {
         // чтение текста с тегами
         Document doc = Jsoup.parse(str);
         Elements ps = doc.select("p");
+        StringBuilder resultBuilder = new StringBuilder(result);
         for (Element p : ps) {
             if (p.hasText() && p.ownText().length() > 0) {
-                result += p.ownText().trim() + "\n\n";
+                resultBuilder.append(p.ownText().trim()).append("\n\n");
             }
         }
+        result = resultBuilder.toString();
         // Чтение оставшегося текста без тегов
         splitText = Arrays.asList((str + " ").split(">"));
         String endText = unescapeEntities(splitText.get(splitText.size() - 1), true);

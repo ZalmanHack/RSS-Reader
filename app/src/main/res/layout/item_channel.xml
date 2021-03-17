@@ -37,6 +37,7 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:text="@{channelModel.name, default=title}"
+            android:textIsSelectable="true"
             app:layout_constraintEnd_toStartOf="@id/delete"
             app:layout_constraintStart_toStartOf="@id/lineView"
             app:layout_constraintTop_toBottomOf="@id/lineView" />
@@ -69,7 +70,8 @@
             app:tint="@color/red"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:contentDescription="@string/delete" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

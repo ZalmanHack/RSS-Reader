@@ -19,19 +19,12 @@ import com.zalman_hack.mvvmrss.databases.entities.Channel;
 import com.zalman_hack.mvvmrss.databinding.FragmentFeedBinding;
 import com.zalman_hack.mvvmrss.viewmodels.FeedViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FeedFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FeedFragment extends Fragment implements OnClickItemInterface {
 
     private static final String ARG_PARAM1 = "channel";
 
-    private FragmentFeedBinding binding;
     private Channel channel;
     private FeedAdapter feedAdapter;
-    private FeedViewModel feedViewModel;
 
     public FeedFragment() {
         super();
@@ -52,7 +45,7 @@ public class FeedFragment extends Fragment implements OnClickItemInterface {
             channel = getArguments().getParcelable(ARG_PARAM1);
 
             feedAdapter = new FeedAdapter(getContext(), getResources().getConfiguration(), this);
-            feedViewModel = new ViewModelProvider(this.getActivity()).get(FeedViewModel.class);
+            FeedViewModel feedViewModel = new ViewModelProvider(this.requireActivity()).get(FeedViewModel.class);
             feedViewModel.getItemsOfChannelLive(channel.channel_id).observe(this,
                     itemList -> feedAdapter.setChannelsWithItems(channel, itemList));
         }
@@ -60,7 +53,7 @@ public class FeedFragment extends Fragment implements OnClickItemInterface {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentFeedBinding.inflate(inflater, container, false);
+        FragmentFeedBinding binding = FragmentFeedBinding.inflate(inflater, container, false);
         binding.itemRecyclerView.setAdapter(feedAdapter);
         binding.itemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return binding.getRoot();

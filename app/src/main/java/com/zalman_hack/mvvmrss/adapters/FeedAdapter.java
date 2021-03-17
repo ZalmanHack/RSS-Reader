@@ -2,7 +2,6 @@ package com.zalman_hack.mvvmrss.adapters;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -17,7 +16,6 @@ import com.zalman_hack.mvvmrss.databases.entities.Channel;
 import com.zalman_hack.mvvmrss.databinding.ItemContainerLandscapeBinding;
 import com.zalman_hack.mvvmrss.databinding.ItemContainerPortraitBinding;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -34,7 +32,6 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void setChannelsWithItems(Channel channel, List<ItemWithChannelAndCategories> itemList) {
-        Log.i("FeedAdapter", MessageFormat.format("setChannelsWithItems. itemList count: {0}", itemList.size()));
         boolean isDataChanged = false;
         if(this.channel == null || !this.channel.equals(channel)) {
             this.channel = channel;
@@ -51,16 +48,15 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.i("FeedAdapter", "onBindViewHolder");
         if (itemList != null) {
-            if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                ItemWithChannelAndCategories item = itemList.get(position);
-                ((ViewHolderPortrait) holder).binding.container.setAnimation(AnimationUtils.loadAnimation(context,R.anim.item_transition));
+            ItemWithChannelAndCategories item = itemList.get(position);
+            if(configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                ((ViewHolderPortrait) holder).binding.container.setAnimation(AnimationUtils.
+                        loadAnimation(context,R.anim.item_transition));
                 ((ViewHolderPortrait) holder).binding.setItemModel(item);
                 ((ViewHolderPortrait) holder).binding.setChannelModel(channel);
                 ((ViewHolderPortrait) holder).binding.setListener(clickItemInterface);
             } else {
-                ItemWithChannelAndCategories item = itemList.get(position);
                 ((ViewHolderLandscape) holder).binding.setItemModel(item);
                 ((ViewHolderLandscape) holder).binding.setChannelModel(channel);
                 ((ViewHolderLandscape) holder).binding.setListener(clickItemInterface);
@@ -71,7 +67,6 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.i("FeedAdapter", "onCreateViewHolder");
         if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             ItemContainerPortraitBinding binding = DataBindingUtil.inflate(
                     LayoutInflater.from(parent.getContext()),
@@ -94,7 +89,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public static class ViewHolderPortrait extends RecyclerView.ViewHolder {
-        private ItemContainerPortraitBinding binding;
+        private final ItemContainerPortraitBinding binding;
         public ViewHolderPortrait(@NonNull ItemContainerPortraitBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
@@ -102,7 +97,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public static class ViewHolderLandscape extends RecyclerView.ViewHolder {
-        private ItemContainerLandscapeBinding binding;
+        private final ItemContainerLandscapeBinding binding;
         public ViewHolderLandscape(@NonNull ItemContainerLandscapeBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -18,8 +17,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="@color/saffron_25"
-        >
+        app:cardBackgroundColor="@color/saffron_25">
 
         <TextView
             android:layout_width="match_parent"

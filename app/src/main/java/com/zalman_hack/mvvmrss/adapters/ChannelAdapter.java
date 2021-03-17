@@ -1,6 +1,5 @@
 package com.zalman_hack.mvvmrss.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -24,7 +23,6 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void setChannels(List<Channel> channels) {
-        Log.i("ChannelAdapter", "setChannels");
         this.channels = channels;
         notifyDataSetChanged();
     }
@@ -32,24 +30,21 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.i("ChannelAdapter", "onCreateViewHolder");
         ItemChannelBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
                 R.layout.item_channel, parent, false);
-        return new ViewHolderChannel(binding);
+        return new ChannelAdapter.ViewHolderChannel(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.i("ChannelAdapter", "onBindViewHolder: " + String.valueOf(position));
         Channel channelModel = channels.get(position);
-        ((ViewHolderChannel) holder).binding.setChannelModel(channelModel);
-        ((ViewHolderChannel) holder).binding.setListener(clickChannelInterface);
+        ((ChannelAdapter.ViewHolderChannel) holder).binding.setChannelModel(channelModel);
+        ((ChannelAdapter.ViewHolderChannel) holder).binding.setListener(clickChannelInterface);
     }
 
     @Override
     public int getItemCount() {
-        Log.i("ChannelAdapter", "getItemCount: " + String.valueOf(channels.size()));
         if (channels != null) {
             return channels.size();
         }
