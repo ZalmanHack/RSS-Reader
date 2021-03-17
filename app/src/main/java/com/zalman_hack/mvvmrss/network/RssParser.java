@@ -107,7 +107,10 @@ public class RssParser {
         String endText = unescapeEntities(splitText.get(splitText.size() - 1), true);
         if(!endText.equals(" "))
             result += endText;
-        return result.replaceAll("(\n)+", "\n\n").trim();
+        result = result.replaceAll("(\n)+", "\n\n").trim();
+        if(result.isEmpty())
+            result += doc.wholeText();
+        return result;
     }
 
     public Channel getChannel() {
