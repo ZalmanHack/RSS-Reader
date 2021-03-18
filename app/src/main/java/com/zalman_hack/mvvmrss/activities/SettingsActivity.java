@@ -17,7 +17,7 @@ import com.zalman_hack.mvvmrss.adapters.OnClickChannelInterface;
 import com.zalman_hack.mvvmrss.databases.entities.Channel;
 import com.zalman_hack.mvvmrss.databinding.ActivitySettingsBinding;
 import com.zalman_hack.mvvmrss.fragments.DeleteDialogFragment;
-import com.zalman_hack.mvvmrss.helpers.MyDrawableCompat;
+import com.zalman_hack.mvvmrss.helpers.CustomDrawableCompat;
 import com.zalman_hack.mvvmrss.viewmodels.FeedViewModel;
 
 import java.util.Objects;
@@ -78,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity implements OnClickChanne
 
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        MyDrawableCompat.setColorFilter(Objects.requireNonNull(binding.toolbar.getNavigationIcon()), getColor(R.color.saffron));
+        CustomDrawableCompat.setColorFilter(Objects.requireNonNull(binding.toolbar.getNavigationIcon()), getColor(R.color.saffron));
     }
 
     @Override

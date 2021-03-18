@@ -24,7 +24,7 @@ import com.zalman_hack.mvvmrss.adapters.CategoryAdapter;
 import com.zalman_hack.mvvmrss.databases.ItemWithChannelAndCategories;
 import com.zalman_hack.mvvmrss.databases.entities.Channel;
 import com.zalman_hack.mvvmrss.databinding.ActivityShowItemBinding;
-import com.zalman_hack.mvvmrss.helpers.MyDrawableCompat;
+import com.zalman_hack.mvvmrss.helpers.CustomDrawableCompat;
 
 import java.util.Objects;
 
@@ -64,9 +64,9 @@ public class ShowItemActivity extends AppCompatActivity {
 
         binding.appBar.addOnOffsetChangedListener(((appBarLayout, verticalOffset) -> {
             int colorRes = (Math.abs(verticalOffset) > appBarLayout.getTotalScrollRange() * 0.75) ? R.color.saffron : R.color.white;
-            MyDrawableCompat.setColorFilter(Objects.requireNonNull(binding.toolbar.getNavigationIcon()), getColor(colorRes));
+            CustomDrawableCompat.setColorFilter(Objects.requireNonNull(binding.toolbar.getNavigationIcon()), getColor(colorRes));
             for(int i = 0; i < binding.toolbar.getMenu().size(); i++) {
-                MyDrawableCompat.setColorFilter(binding.toolbar.getMenu().getItem(i).getIcon(), getColor(colorRes));
+                CustomDrawableCompat.setColorFilter(binding.toolbar.getMenu().getItem(i).getIcon(), getColor(colorRes));
             }
         }));
     }

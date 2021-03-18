@@ -9,7 +9,7 @@ import android.os.Build;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
-public class MyDrawableCompat {
+public class CustomDrawableCompat {
     public static void setColorFilter(@NonNull Drawable drawable, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             drawable.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
