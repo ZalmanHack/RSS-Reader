@@ -14,47 +14,37 @@
             type="com.zalman_hack.mvvmrss.databases.entities.Channel" />
 
         <variable
-            name="listener"
+            name="itemListener"
             type="com.zalman_hack.mvvmrss.adapters.OnClickItemInterface" />
 
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="0dp"
-        app:cardElevation="4dp"
-        android:onClick="@{()->listener.onClickItem(itemModel)}"
+        app:cardCornerRadius="@dimen/item_card_radius"
+        android:layout_marginHorizontal="@dimen/card_margin"
+        android:layout_marginTop="@dimen/card_margin"
+        android:layout_marginBottom="@dimen/card_margin_bottom"
+        app:cardElevation="@dimen/card_elevation"
+        android:onClick="@{()->itemListener.onClickItem(itemModel)}"
         android:focusable="true">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="110dp">
+            android:layout_height="@dimen/card_landscape_height">
 
             <ImageView
                 android:id="@+id/title_image"
-                android:layout_width="160dp"
+                android:layout_width="@dimen/card_image_landscape_width"
                 android:background="@color/black_10A"
                 android:imageURL="@{itemModel.item.image_link}"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:contentDescription="@{channelModel.name}" />
 
-            <TextView
-                android:id="@+id/channel_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{channelModel.name, default=Channel_name}"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="2dp"
-                android:textColor="@color/black"
-                android:layout_toEndOf="@id/title_image"/>
 
             <TextView
                 android:id="@+id/title_text"
@@ -62,24 +52,36 @@
                 android:layout_height="wrap_content"
                 android:text="@{itemModel.item.title, default=Title}"
                 android:maxLines="3"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="5dp"
-                android:textSize="14sp"
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:layout_marginTop="@dimen/text_margin"
+                android:textSize="@dimen/text_normal"
                 android:textStyle="bold"
                 android:textColor="@color/black"
+                android:layout_toEndOf="@id/title_image"/>
+
+            <TextView
+                android:id="@+id/channel_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{channelModel.name, default=Channel_name}"
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:textSize="@dimen/text_small"
+                android:textColor="@color/black"
                 android:layout_toEndOf="@id/title_image"
-                android:layout_below="@id/channel_text"/>
+                android:layout_below="@id/title_text"/>
+
 
             <TextView
                 android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{itemModel.item.author, default=Author}"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:textSize="12sp"
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:layout_marginBottom="@dimen/text_margin"
+                android:textSize="@dimen/text_small"
                 android:textAlignment="textEnd"
                 android:textStyle="normal"
                 android:textColor="@color/black"
@@ -92,10 +94,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:dateShort="@{itemModel.item.date}"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:textSize="12sp"
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:layout_marginBottom="@dimen/text_margin"
+                android:textSize="@dimen/text_small"
                 android:textAlignment="textEnd"
                 android:textStyle="normal"
                 android:textColor="@color/black"

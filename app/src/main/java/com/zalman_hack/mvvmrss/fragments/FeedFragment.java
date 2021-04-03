@@ -1,17 +1,17 @@
 package com.zalman_hack.mvvmrss.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.zalman_hack.mvvmrss.activities.ShowItemActivity;
 import com.zalman_hack.mvvmrss.adapters.FeedAdapter;
 import com.zalman_hack.mvvmrss.adapters.OnClickItemInterface;
 import com.zalman_hack.mvvmrss.databases.ItemWithChannelAndCategories;
@@ -19,12 +19,15 @@ import com.zalman_hack.mvvmrss.databases.entities.Channel;
 import com.zalman_hack.mvvmrss.databinding.FragmentFeedBinding;
 import com.zalman_hack.mvvmrss.viewmodels.FeedViewModel;
 
+import static androidx.navigation.fragment.NavHostFragment.findNavController;
+
 public class FeedFragment extends Fragment implements OnClickItemInterface {
 
     private static final String ARG_PARAM1 = "channel";
 
     private Channel channel;
     private FeedAdapter feedAdapter;
+
 
     public FeedFragment() {
         super();
@@ -41,11 +44,10 @@ public class FeedFragment extends Fragment implements OnClickItemInterface {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FeedViewModel feedViewModel = new ViewModelProvider(this.requireActivity()).get(FeedViewModel.class);
         if (getArguments() != null) {
             channel = getArguments().getParcelable(ARG_PARAM1);
-
-            feedAdapter = new FeedAdapter(getContext(), getResources().getConfiguration(), this);
-            FeedViewModel feedViewModel = new ViewModelProvider(this.requireActivity()).get(FeedViewModel.class);
+            feedAdapter = new FeedAdapter(getResources().getConfiguration(), this);
             feedViewModel.getItemsOfChannelLive(channel.channel_id).observe(this,
                     itemList -> feedAdapter.setChannelsWithItems(channel, itemList));
         }
@@ -60,15 +62,14 @@ public class FeedFragment extends Fragment implements OnClickItemInterface {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onClickItem(ItemWithChannelAndCategories itemModel) {
-        Intent intent = new Intent(this.getContext(), ShowItemActivity.class);
-        intent.putExtra("itemModel", itemModel);
-        intent.putExtra("channelModel", channel);
-        startActivity(intent);
+        NavDirections directions = FeedsPageFragmentDirections.actionFeedsPageFragmentToShowItemFragment(itemModel, channel);
+
+        findNavController(this).navigate(directions);
     }
 }

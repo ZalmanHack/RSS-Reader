@@ -2,6 +2,11 @@ plugins {
     id 'com.android.application'
 }
 
+apply plugin: 'com.android.application'
+apply plugin: 'dagger.hilt.android.plugin'
+// Для генерации класса по работе с агрументами компонента навигаци
+apply plugin: 'androidx.navigation.safeargs'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -49,7 +54,7 @@ dependencies {
     // swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     // Работа с фрагментами
-    implementation "androidx.fragment:fragment:1.3.1"
+    implementation "androidx.fragment:fragment:1.3.2"
 
     // RSS Reader
     implementation 'com.rometools:rome:1.15.0'
@@ -59,9 +64,9 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.2.6"
 
     // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.3.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.3.1"
     // LiveData
-    implementation "androidx.lifecycle:lifecycle-livedata:2.3.0"
+    implementation "androidx.lifecycle:lifecycle-livedata:2.3.1"
     // Загрузчик картинок
     implementation "com.squareup.picasso:picasso:2.71828"
 
@@ -75,4 +80,17 @@ dependencies {
 
     // FlexBoxManager for Categories RecycleView
     implementation 'com.google.android:flexbox:2.0.1'
+
+    // DI
+    implementation 'com.google.dagger:hilt-android:2.33-beta'
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.33-beta'
+
+    // Retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+
+    // Navigation component
+    implementation "androidx.navigation:navigation-fragment:2.3.4"
+    implementation "androidx.navigation:navigation-ui:2.3.4"
 }

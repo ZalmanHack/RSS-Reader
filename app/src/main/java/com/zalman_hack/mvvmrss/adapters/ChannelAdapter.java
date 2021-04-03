@@ -5,16 +5,18 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zalman_hack.mvvmrss.BR;
 import com.zalman_hack.mvvmrss.R;
 import com.zalman_hack.mvvmrss.databases.entities.Channel;
-import com.zalman_hack.mvvmrss.databinding.ItemChannelBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelViewHolder>
+{
     private List<Channel> channels = new ArrayList<>();
     private final OnClickChannelInterface clickChannelInterface;
 
@@ -29,33 +31,46 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemChannelBinding binding = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.getContext()),
-                R.layout.item_channel, parent, false);
-        return new ChannelAdapter.ViewHolderChannel(binding);
+    public ChannelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return ChannelViewHolder.create(LayoutInflater.from(parent.getContext()),parent,viewType);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Channel channelModel = channels.get(position);
-        ((ChannelAdapter.ViewHolderChannel) holder).binding.setChannelModel(channelModel);
-        ((ChannelAdapter.ViewHolderChannel) holder).binding.setListener(clickChannelInterface);
+    public void onBindViewHolder(@NonNull ChannelViewHolder holder, int position) {
+        holder.bindTo(channels.get(position), clickChannelInterface);
     }
 
     @Override
     public int getItemCount() {
-        if (channels != null) {
+        if (channels != null)
             return channels.size();
-        }
         return 0;
     }
 
-    public static class ViewHolderChannel extends RecyclerView.ViewHolder {
-        private final ItemChannelBinding binding;
-        public ViewHolderChannel(@NonNull ItemChannelBinding binding) {
+    @Override
+    public int getItemViewType(int position) {
+        return R.layout.item_channel;
+    }
+
+    static class ChannelViewHolder extends RecyclerView.ViewHolder {
+
+        private final ViewDataBinding binding;
+
+        static ChannelViewHolder create(LayoutInflater inflater, ViewGroup parent, int viewType) {
+            ViewDataBinding binding = DataBindingUtil.inflate(inflater, viewType, parent, false);
+            return new ChannelViewHolder(binding);
+        }
+
+        public ChannelViewHolder(ViewDataBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+        }
+
+        public void bindTo(Channel channelModel, OnClickChannelInterface channelInterface) {
+            binding.setVariable(BR.channelModel, channelModel);
+            binding.setVariable(BR.channelListener, channelInterface);
+            binding.executePendingBindings();
         }
     }
 }

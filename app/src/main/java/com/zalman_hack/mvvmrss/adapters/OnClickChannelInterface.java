@@ -4,4 +4,5 @@ import com.zalman_hack.mvvmrss.databases.entities.Channel;
 
 public interface OnClickChannelInterface {
     void onDeleteChannel(Channel channel);
+    void onInsertChannel(String linkChannel);
 }

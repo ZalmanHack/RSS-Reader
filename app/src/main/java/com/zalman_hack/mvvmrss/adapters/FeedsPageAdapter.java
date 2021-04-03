@@ -2,7 +2,8 @@ package com.zalman_hack.mvvmrss.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.zalman_hack.mvvmrss.databases.entities.Channel;
@@ -16,8 +17,8 @@ public class FeedsPageAdapter extends FragmentStateAdapter {
     private final List<FeedFragment> fragments = new ArrayList<>();
     private final ArrayList<Long> fragmentIDs = new ArrayList<>();
 
-    public FeedsPageAdapter(@NonNull FragmentActivity fragmentActivity) {
-        super(fragmentActivity);
+    public FeedsPageAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+        super(fragmentManager, lifecycle);
     }
 
     public void setChannels(List<Channel> channels) {
@@ -25,7 +26,7 @@ public class FeedsPageAdapter extends FragmentStateAdapter {
         fragmentIDs.clear();
         for (int i = 0; i < fragments.size();) {
             FeedFragment fragment = fragments.get(i);
-            fragment.getParentFragmentManager().beginTransaction().remove(fragment).commit();
+            fragment.getChildFragmentManager().beginTransaction().remove(fragment).commitNow();
             fragments.remove(i);
             fragmentIDs.remove(i);
         }

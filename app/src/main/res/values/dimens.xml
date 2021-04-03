@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tabLayout_height">40dp</dimen>
+    <dimen name="tabPadding">0dp</dimen>
+    <dimen name="tabIndicatorHeight">3dp</dimen>
+    <dimen name="toolbar_elevation">0dp</dimen>
+
+    <dimen name="layout_margin">16dp</dimen>
+    <dimen name="layout_padding">10dp</dimen>
+
+    <dimen name="shadow_statusBar_height">50dp</dimen>
+
+    <dimen name="text_paddingBottom">16sp</dimen>
+    <dimen name="text_margin">10dp</dimen>
+    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_big">24sp</dimen>
+    <dimen name="text_normal">18sp</dimen>
+
+    <dimen name="category_item_margin">10dp</dimen>
+    <dimen name="category_item_radius">10dp</dimen>
+    <dimen name="category_elevation">0dp</dimen>
+    <dimen name="channel_line_height">1dp</dimen>
+
+    <dimen name="card_margin">10dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_margin_bottom">0dp</dimen>
+    <dimen name="card_landscape_height">110dp</dimen>
+    <dimen name="card_image_landscape_width">160dp</dimen>
+    <dimen name="item_card_radius">10dp</dimen>
+    <dimen name="card_image_portrait_height">120dp</dimen>
+    <dimen name="image_text_margin_bottom">5dp</dimen>
+</resources>

@@ -1,33 +1,29 @@
 package com.zalman_hack.mvvmrss.adapters;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zalman_hack.mvvmrss.R;
+import com.zalman_hack.mvvmrss.BR;
 import com.zalman_hack.mvvmrss.databases.ItemWithChannelAndCategories;
 import com.zalman_hack.mvvmrss.databases.entities.Channel;
-import com.zalman_hack.mvvmrss.databinding.ItemContainerLandscapeBinding;
-import com.zalman_hack.mvvmrss.databinding.ItemContainerPortraitBinding;
 
 import java.util.List;
 
-public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
     private Channel channel;
     private List<ItemWithChannelAndCategories> itemList;
-    private final Context context;
     private final Configuration configuration;
     private final OnClickItemInterface clickItemInterface;
 
-    public FeedAdapter(Context context, Configuration configuration, OnClickItemInterface clickItemInterface) {
+    public FeedAdapter(Configuration configuration, OnClickItemInterface clickItemInterface) {
         this.configuration = configuration;
-        this.context = context;
         this.clickItemInterface = clickItemInterface;
     }
 
@@ -47,37 +43,16 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
         if (itemList != null) {
-            ItemWithChannelAndCategories item = itemList.get(position);
-            if(configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                ((ViewHolderPortrait) holder).binding.container.setAnimation(AnimationUtils.
-                        loadAnimation(context,R.anim.item_transition));
-                ((ViewHolderPortrait) holder).binding.setItemModel(item);
-                ((ViewHolderPortrait) holder).binding.setChannelModel(channel);
-                ((ViewHolderPortrait) holder).binding.setListener(clickItemInterface);
-            } else {
-                ((ViewHolderLandscape) holder).binding.setItemModel(item);
-                ((ViewHolderLandscape) holder).binding.setChannelModel(channel);
-                ((ViewHolderLandscape) holder).binding.setListener(clickItemInterface);
-            }
+            holder.bindTo(itemList.get(position), channel, clickItemInterface);
         }
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            ItemContainerPortraitBinding binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.getContext()),
-                    R.layout.item_container_portrait, parent, false);
-            return new ViewHolderPortrait(binding);
-        } else {
-            ItemContainerLandscapeBinding binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.getContext()),
-                    R.layout.item_container_landscape, parent, false);
-            return new ViewHolderLandscape(binding);
-        }
+    public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return FeedViewHolder.create(LayoutInflater.from(parent.getContext()), parent, viewType);
     }
 
     @Override
@@ -88,19 +63,34 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return 0;
     }
 
-    public static class ViewHolderPortrait extends RecyclerView.ViewHolder {
-        private final ItemContainerPortraitBinding binding;
-        public ViewHolderPortrait(@NonNull ItemContainerPortraitBinding binding) {
+    @Override
+    public int getItemViewType(int position) {
+        if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+            return R.layout.item_container_portrait;
+        return R.layout.item_container_landscape;
+    }
+
+    static class FeedViewHolder extends RecyclerView.ViewHolder {
+
+        private final ViewDataBinding binding;
+
+        static FeedViewHolder create(LayoutInflater inflater, ViewGroup parent, int viewType) {
+            ViewDataBinding binding = DataBindingUtil.inflate(inflater, viewType, parent, false);
+            return new FeedViewHolder(binding);
+        }
+
+        public FeedViewHolder(ViewDataBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
-    }
 
-    public static class ViewHolderLandscape extends RecyclerView.ViewHolder {
-        private final ItemContainerLandscapeBinding binding;
-        public ViewHolderLandscape(@NonNull ItemContainerLandscapeBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        public void bindTo(ItemWithChannelAndCategories itemModel,
+                           Channel channelModel,
+                           OnClickItemInterface listener) {
+            binding.setVariable(BR.itemModel, itemModel);
+            binding.setVariable(BR.channelModel, channelModel);
+            binding.setVariable(BR.itemListener, listener);
+            binding.executePendingBindings();
         }
     }
 }

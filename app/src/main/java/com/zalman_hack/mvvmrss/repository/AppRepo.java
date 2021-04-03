@@ -1,11 +1,10 @@
 package com.zalman_hack.mvvmrss.repository;
 
-import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import com.zalman_hack.mvvmrss.databases.AppDatabase;
-import com.zalman_hack.mvvmrss.databases.ChannelWithItems;
 import com.zalman_hack.mvvmrss.databases.ItemWithChannelAndCategories;
 import com.zalman_hack.mvvmrss.databases.entities.Channel;
 import com.zalman_hack.mvvmrss.network.RssParser;
@@ -14,18 +13,24 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import javax.inject.Inject;
+
+
 public class AppRepo {
 
-    private final AppDatabase appDatabase;
+    public AppDatabase appDatabase;
+    public RssParser rssParser;
     private final Executor executor = Executors.newSingleThreadExecutor();
 
-    public AppRepo(Context context) {
-        appDatabase = AppDatabase.getInstance(context);
+    @Inject
+    public AppRepo(AppDatabase appDatabase, RssParser rssParser) {
+        this.appDatabase = appDatabase;
+        this.rssParser = rssParser;
     }
 
     public boolean insertChannel(Channel channel) {
         try {
-            RssParser rssParser = new RssParser(channel.link);
+            this.rssParser.load(channel.link);
             if(rssParser.isDataLoaded()) {
                 channel = rssParser.getChannel();
                 appDatabase.channelsFeedDao().insertChannel(channel);
@@ -47,10 +52,6 @@ public class AppRepo {
         return appDatabase.channelsFeedDao().getChannelsAllLive();
     }
 
-    public LiveData<List<ChannelWithItems>> getItemsAllLive()  {
-        return appDatabase.channelsFeedDao().getItemsAllLive();
-    }
-
     public LiveData<List<ItemWithChannelAndCategories>> getItemsOfChannelLive(long channelId) {
         return appDatabase.channelsFeedDao().getItemsOfChannelLive(channelId);
     }
@@ -60,7 +61,7 @@ public class AppRepo {
             boolean result = true;
             List<Channel> channels = appDatabase.channelsFeedDao().getChannelsAll();
             for(Channel channel : channels) {
-                RssParser rssParser = new RssParser(channel.link);
+                this.rssParser.load(channel.link);
                 if(rssParser.isDataLoaded()) {
                     List<ItemWithChannelAndCategories> items = rssParser.getItems();
                     appDatabase.channelsFeedDao().updateChannelItems(channel, items);
@@ -70,7 +71,8 @@ public class AppRepo {
                 }
             }
             return result;
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            Log.e("updateChannels", e.getMessage());
             return false;
         }
     }

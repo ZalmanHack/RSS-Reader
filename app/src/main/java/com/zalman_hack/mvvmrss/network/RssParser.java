@@ -18,28 +18,40 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.net.URL;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import static java.util.Objects.requireNonNull;
 import static org.jsoup.parser.Parser.unescapeEntities;
 
 public class RssParser {
 
-    private final Channel channel = new Channel();
-    private final List<ItemWithChannelAndCategories> items = new ArrayList<>();
+    private Channel channel;
+    private final RetrofitService service;
+    private List<ItemWithChannelAndCategories> items;
     private boolean isDataLoaded = false;
 
-    public RssParser(String Url) {
-        channel.link = Url;
+    @Inject
+    public RssParser(RetrofitService service) {
+        this.service = service;
+    }
+
+    public void load(String url) {
+        this.channel = new Channel();
+        this.channel.link = url;
         init();
     }
 
     public void init() {
         try {
             setDataLoaded(false);
-            XmlReader xmlReader = new XmlReader(new URL(channel.link).openConnection());
+            items = new ArrayList<>();
+            InputStream responseBody = requireNonNull(service.serviceNews.getRss(channel.link).execute().body()).byteStream();
+            XmlReader xmlReader = new XmlReader(responseBody);
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed feed = input.build(xmlReader);
             channel.name = feed.getTitle();

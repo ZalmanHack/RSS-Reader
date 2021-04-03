@@ -13,4 +13,5 @@
     <string name="add_channel">Добавить канал</string>
     <string name="rss_feed_url">URL ссылка</string>
     <string name="channel_input_helper">Введите URL ссылку на RSS новостную ленту</string>
+    <string name="show_item">Просмотр записи</string>
 </resources>

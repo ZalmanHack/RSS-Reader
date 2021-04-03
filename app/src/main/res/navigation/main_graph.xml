@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/feedsPageFragment">
+
+    <fragment
+        android:id="@+id/feedsPageFragment"
+        android:name="com.zalman_hack.mvvmrss.fragments.FeedsPageFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_feeds_page">
+        <action
+            android:id="@+id/action_feedsPageFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_feedsPageFragment_to_showItemFragment"
+            app:destination="@id/showItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.zalman_hack.mvvmrss.fragments.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/showItemFragment"
+        android:name="com.zalman_hack.mvvmrss.fragments.ShowItemFragment"
+        android:label="@string/show_item"
+        tools:layout="@layout/fragment_show_item">
+        <argument
+            android:name="itemModel"
+            app:argType="com.zalman_hack.mvvmrss.databases.ItemWithChannelAndCategories" />
+        <argument
+            android:name="channelModel"
+            app:argType="com.zalman_hack.mvvmrss.databases.entities.Channel" />
+    </fragment>
+</navigation>

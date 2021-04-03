@@ -12,4 +12,5 @@
     <string name="add_channel">Add channel</string>
     <string name="rss_feed_url">RSS Feed URL</string>
     <string name="channel_input_helper">Enter URL with RSS news feed </string>
+    <string name="show_item">Show item</string>
 </resources>

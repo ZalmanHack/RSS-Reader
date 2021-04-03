@@ -9,7 +9,7 @@
             type="com.zalman_hack.mvvmrss.databases.entities.Channel" />
 
         <variable
-            name="listener"
+            name="channelListener"
             type="com.zalman_hack.mvvmrss.adapters.OnClickChannelInterface" />
 
     </data>
@@ -23,19 +23,19 @@
         <View
             android:id="@+id/lineView"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/channel_line_height"
             android:background="@color/black_200"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="@dimen/layout_margin"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingHorizontal="10dp"
+            android:paddingTop="@dimen/layout_padding"
+            android:paddingHorizontal="@dimen/layout_padding"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_normal"
             android:text="@{channelModel.name, default=title}"
             android:textIsSelectable="true"
             app:layout_constraintEnd_toStartOf="@id/delete"
@@ -46,9 +46,9 @@
             android:id="@+id/link"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="10dp"
-            android:paddingBottom="10dp"
-            android:textSize="16sp"
+            android:paddingHorizontal="@dimen/layout_padding"
+            android:paddingBottom="@dimen/layout_padding"
+            android:textSize="@dimen/text_small"
             android:text="@{channelModel.link, default=link}"
             android:textColor="@color/saffron"
             android:textIsSelectable="true"
@@ -61,9 +61,9 @@
             android:id="@+id/delete"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:onClick="@{()->listener.onDeleteChannel(channelModel)}"
+            android:onClick="@{()->channelListener.onDeleteChannel(channelModel)}"
             android:src="@drawable/ic_baseline_clear"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="@dimen/layout_padding"
             app:layout_constraintEnd_toEndOf="@id/lineView"
             app:layout_constraintTop_toTopOf="@id/title"
             app:layout_constraintBottom_toBottomOf="@id/link"
